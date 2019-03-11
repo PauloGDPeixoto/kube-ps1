@@ -335,9 +335,7 @@ kube_ps1() {
 
   # Symbol
   #KUBE_PS1+="$(_kube_ps1_color_fg $KUBE_PS1_SYMBOL_COLOR)$(_kube_ps1_symbol)${KUBE_PS1_RESET_COLOR}"
-  KUBE_PS1+="$(_kube_ps1_color_fg $KUBE_PS1_SYMBOL_COLOR)"
-  KUBE_PS1+="$(date +%H:%M:%S)"
-  KUBE_PS1+="${KUBE_PS1_RESET_COLOR}"
+  KUBE_PS1+="$(_kube_ps1_color_fg $KUBE_PS1_SYMBOL_COLOR)$(date +%H:%M:%S)${KUBE_PS1_RESET_COLOR}"
 
   if [[ -n "${KUBE_PS1_SEPARATOR}" ]] && [[ "${KUBE_PS1_SYMBOL_ENABLE}" == true ]]; then
     KUBE_PS1+="${KUBE_PS1_SEPARATOR}"
