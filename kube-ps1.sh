@@ -24,7 +24,7 @@
 # Override these values in ~/.zshrc or ~/.bashrc
 KUBE_PS1_BINARY="${KUBE_PS1_BINARY:-kubectl}"
 KUBE_PS1_SYMBOL_ENABLE="${KUBE_PS1_SYMBOL_ENABLE:-true}"
-KUBE_PS1_SYMBOL_DEFAULT=${KUBE_PS1_SYMBOL_DEFAULT:-$'\u2388 '}
+#KUBE_PS1_SYMBOL_DEFAULT=${KUBE_PS1_SYMBOL_DEFAULT:-$'\u2388 '}
 KUBE_PS1_SYMBOL_USE_IMG="${KUBE_PS1_SYMBOL_USE_IMG:-false}"
 KUBE_PS1_NS_ENABLE="${KUBE_PS1_NS_ENABLE:-true}"
 KUBE_PS1_PREFIX="${KUBE_PS1_PREFIX-(}"
@@ -239,6 +239,7 @@ _kube_ps1_get_context_ns() {
   fi
 
   KUBE_PS1_CONTEXT="$(${KUBE_PS1_BINARY} config current-context 2>/dev/null)"
+  KUBE_PS1_CONTEXT="${KUBE_PS1_CONTEXT%%.*}"
 
   if [[ ! -z "${KUBE_PS1_CLUSTER_FUNCTION}" ]]; then
     KUBE_PS1_CONTEXT=$($KUBE_PS1_CLUSTER_FUNCTION $KUBE_PS1_CONTEXT)
@@ -333,7 +334,10 @@ kube_ps1() {
   [[ -n "${KUBE_PS1_PREFIX}" ]] && KUBE_PS1+="${KUBE_PS1_PREFIX}"
 
   # Symbol
-  KUBE_PS1+="$(_kube_ps1_color_fg $KUBE_PS1_SYMBOL_COLOR)$(_kube_ps1_symbol)${KUBE_PS1_RESET_COLOR}"
+  #KUBE_PS1+="$(_kube_ps1_color_fg $KUBE_PS1_SYMBOL_COLOR)$(_kube_ps1_symbol)${KUBE_PS1_RESET_COLOR}"
+  KUBE_PS1+="$(_kube_ps1_color_fg $KUBE_PS1_SYMBOL_COLOR)"
+  KUBE_PS1+="$(date +%H:%M:%S)"
+  KUBE_PS1+="${KUBE_PS1_RESET_COLOR}"
 
   if [[ -n "${KUBE_PS1_SEPARATOR}" ]] && [[ "${KUBE_PS1_SYMBOL_ENABLE}" == true ]]; then
     KUBE_PS1+="${KUBE_PS1_SEPARATOR}"
