@@ -41,6 +41,7 @@ KUBE_PS1_LAST_TIME=0
 KUBE_PS1_CLUSTER_FUNCTION="${KUBE_PS1_CLUSTER_FUNCTION}"
 KUBE_PS1_NAMESPACE_FUNCTION="${KUBE_PS1_NAMESPACE_FUNCTION}"
 
+
 # Determine our shell
 if [ "${ZSH_VERSION-}" ]; then
   KUBE_PS1_SHELL="zsh"
@@ -334,6 +335,14 @@ kube_ps1() {
   [[ -n "${KUBE_PS1_PREFIX}" ]] && KUBE_PS1+="${KUBE_PS1_PREFIX}"
 
   # Symbol
+  if [ $KUBE_PS1_CONTEXT == 'prod' ]; then
+    KUBE_PS1_CTX_COLOR='red'
+    KUBE_PS1_SYMBOL_COLOR='red'
+  else
+    KUBE_PS1_CTX_COLOR='green'
+    KUBE_PS1_SYMBOL_COLOR='green'
+  fi
+
   #KUBE_PS1+="$(_kube_ps1_color_fg $KUBE_PS1_SYMBOL_COLOR)$(_kube_ps1_symbol)${KUBE_PS1_RESET_COLOR}"
   KUBE_PS1+="$(_kube_ps1_color_fg $KUBE_PS1_SYMBOL_COLOR)$(date +%H:%M:%S)${KUBE_PS1_RESET_COLOR}"
 
