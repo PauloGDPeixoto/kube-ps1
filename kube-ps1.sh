@@ -335,7 +335,7 @@ kube_ps1() {
   [[ -n "${KUBE_PS1_PREFIX}" ]] && KUBE_PS1+="${KUBE_PS1_PREFIX}"
 
   # Symbol
-  if [ $KUBE_PS1_CONTEXT == 'prod' ]; then
+  if [[ $KUBE_PS1_CONTEXT == *"prod"* ]]; then
     KUBE_PS1_CTX_COLOR='red'
     KUBE_PS1_SYMBOL_COLOR='red'
   else
