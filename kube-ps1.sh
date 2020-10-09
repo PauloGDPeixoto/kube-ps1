@@ -242,6 +242,10 @@ _kube_ps1_get_context_ns() {
   KUBE_PS1_CONTEXT="$(${KUBE_PS1_BINARY} config current-context 2>/dev/null)"
   KUBE_PS1_CONTEXT="${KUBE_PS1_CONTEXT%%.*}"
 
+  if [[ $KUBE_PS1_CONTEXT == *":"* ]]; then
+    KUBE_PS1_CONTEXT=`echo $KUBE_PS1_CONTEXT | cut -f1 -d":"`
+  fi
+
   if [[ ! -z "${KUBE_PS1_CLUSTER_FUNCTION}" ]]; then
     KUBE_PS1_CONTEXT=$($KUBE_PS1_CLUSTER_FUNCTION $KUBE_PS1_CONTEXT)
   fi
@@ -259,6 +263,9 @@ _kube_ps1_get_context_ns() {
         KUBE_PS1_NAMESPACE=$($KUBE_PS1_NAMESPACE_FUNCTION $KUBE_PS1_NAMESPACE)
     fi
 
+    if [[ $KUBE_PS1_CONTEXT == *"$KUBE_PS1_NAMESPACE"* ]]; then
+      KUBE_PS1_NS_ENABLE=false
+    fi
   fi
 }
 
@@ -343,8 +350,14 @@ kube_ps1() {
     KUBE_PS1_SYMBOL_COLOR='green'
   fi
 
+  if [[ "${KUBE_PS1_NS_ENABLE}" == false ]]; then
+    KUBE_PS1_CLOCK_COLOR='cyan'
+  else
+    KUBE_PS1_CLOCK_COLOR=$KUBE_PS1_SYMBOL_COLOR
+  fi
+
   #KUBE_PS1+="$(_kube_ps1_color_fg $KUBE_PS1_SYMBOL_COLOR)$(_kube_ps1_symbol)${KUBE_PS1_RESET_COLOR}"
-  KUBE_PS1+="$(_kube_ps1_color_fg $KUBE_PS1_SYMBOL_COLOR)$(date +%H:%M:%S)${KUBE_PS1_RESET_COLOR}"
+  KUBE_PS1+="$(_kube_ps1_color_fg $KUBE_PS1_CLOCK_COLOR)$(date +%H:%M:%S)${KUBE_PS1_RESET_COLOR}"
 
   if [[ -n "${KUBE_PS1_SEPARATOR}" ]] && [[ "${KUBE_PS1_SYMBOL_ENABLE}" == true ]]; then
     KUBE_PS1+="${KUBE_PS1_SEPARATOR}"
@@ -367,5 +380,5 @@ kube_ps1() {
   # Close Background color if defined
   [[ -n "${KUBE_PS1_BG_COLOR}" ]] && KUBE_PS1+="${_KUBE_PS1_OPEN_ESC}${_KUBE_PS1_DEFAULT_BG}${_KUBE_PS1_CLOSE_ESC}"
 
-  echo "${KUBE_PS1}"
+  echo -ne "${KUBE_PS1}"
 }
