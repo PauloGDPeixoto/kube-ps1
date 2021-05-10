@@ -242,9 +242,9 @@ _kube_ps1_get_context_ns() {
   KUBE_PS1_CONTEXT="$(${KUBE_PS1_BINARY} config current-context 2>/dev/null)"
   KUBE_PS1_CONTEXT="${KUBE_PS1_CONTEXT%%.*}"
 
-  if [[ $KUBE_PS1_CONTEXT == *":"* ]]; then
-    KUBE_PS1_CONTEXT=`echo $KUBE_PS1_CONTEXT | cut -f1 -d":"`
-  fi
+  #if [[ $KUBE_PS1_CONTEXT == *":"* ]]; then
+  #  KUBE_PS1_CONTEXT=`echo $KUBE_PS1_CONTEXT | cut -f1 -d":"`
+  #fi
 
   if [[ ! -z "${KUBE_PS1_CLUSTER_FUNCTION}" ]]; then
     KUBE_PS1_CONTEXT=$($KUBE_PS1_CLUSTER_FUNCTION $KUBE_PS1_CONTEXT)
